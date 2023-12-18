@@ -68,7 +68,7 @@ elif authentication_status:
             return None
         return r.json()
     st.write(f'Welcome  *{name}*')
-    lottie_dog=load_lottieurl("https://assets7.lottiefiles.com/packages/slewLW4YOw.json") 
+    lottie_dog=load_lottieurl("https://assets7.lottiefiles.com/packages/lf20_xBGyhl.json") 
     with st_lottie_spinner(lottie_dog, width= 300, key="dog"):
 
 

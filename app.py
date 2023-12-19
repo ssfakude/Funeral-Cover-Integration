@@ -93,6 +93,7 @@ elif authentication_status:
             st.title("Funeral Cover Integration")
             st.subheader("NB, make sure the file is type XLSX:")
             data_file = st.file_uploader("[Leads]",type=['xlsx'])
+            NoError = True
             # lottie_nodata=load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_5awivhzm.json")
             # st_lottie(lottie_nodata, key="load", width=600)
             if st.button("Process"):
@@ -127,6 +128,9 @@ elif authentication_status:
                             dateTime =  j[4]
                             optinurl  =j[6]
                             phone1= str(j[3])
+                            if (len(phone1) <10):
+                                phone1="0"+ str(j[3])
+                            
                             optindate = str(j[6])
                             testmode ="Yes"
                             grossmonthlyincome = str(j[5])
@@ -141,20 +145,32 @@ elif authentication_status:
                             current_datetime = datetime.now()
                             current_date_time = current_datetime.strftime("%m/%d/%Y, %H:%M:%S")
                            
-                            url = "https://returnxdigital.leadbyte.co.uk/api/submit.php?returnjson=yes&campid=FUNERAL-COVER&sid=24845&testmode=yes&email="+email+"&firstname="+firstname+"&lastname="+lastname+"&phone1="+phone1+"&optinurl="+optinurl+"&optindate="+optindate+"&grossmonthlyincome="+grossmonthlyincome+"&acceptterms="+acceptterms+"&offer_id="+offer_id
+                            url = "https://returnxdigital.leadbyte.co.uk/api/submit.php?returnjson=yes&campid=FUNERAL-COVER&sid=24845&email="+email+"&firstname="+firstname+"&lastname="+lastname+"&phone1="+phone1+"&optinurl="+optinurl+"&optindate="+optindate+"&acceptterms="+acceptterms+"&offer_id="+offer_id
                           
                             
                          
                             response = requests.post(url = url)
-                            print("Leads- ",response.status_code)
-                            print("What is what: ",acceptterms)
-                           
-                    st.markdown("<h2 style='text-align: center; color: white;'>Synchronization completed!</h2>", unsafe_allow_html=True)
-                    #lottie_nodata=load_lottieurl("https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json")
-                    lottie_nodata=load_lottieurl("https://assets7.lottiefiles.com/private_files/lf30_rjqwaenm.json")
-                    #st_lottie(lottie_nodata, key="done", width=270) https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json
-                    st.balloons()
-                    print("-----------------------------------------------")
+                            content = str(response.content)
+                            content = content.replace("b'", '')
+                            content= content.rstrip("\'")
+                            res = json.loads(content)
+                            code = res.get("code")
+                            if (code !=1 ):
+                                NoError = False
+                                error= 'Error: '+ str(res.get("response"))+ " Email: " + email
+                                st.error( error, icon="🚨")
+                                break
+                            print("Leads- phone1:  ",response.content)
+                          
+                    if (NoError) :    
+                        st.markdown("<h2 style='text-align: center; color: white;'>Synchronization completed!</h2>", unsafe_allow_html=True)
+                        #lottie_nodata=load_lottieurl("https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json")
+                        lottie_nodata=load_lottieurl("https://assets7.lottiefiles.com/private_files/lf30_rjqwaenm.json")
+                        #st_lottie(lottie_nodata, key="done", width=270) https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json
+                        st.balloons()
+                        print("-----------------------------------------------")
+                    else:
+                        st.markdown("<h2 style='text-align: center; color: white;'>Synchronization Not completed:(</h2>", unsafe_allow_html=True)
 
         
         if __name__ == '__main__':
@@ -175,5 +191,3 @@ hide_st_style = """
                 """
         
 st.markdown(hide_st_style, unsafe_allow_html=True)
-
-

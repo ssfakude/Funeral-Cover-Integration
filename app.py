@@ -60,6 +60,7 @@ if authentication_status == False:
 # elif authentication_status == None:
 #     st.warning('Please enter your username and password')
 elif authentication_status:
+    st.write(f'Welcome  *{name}*')
     @st.cache_data
     def read_file(data_file):
         

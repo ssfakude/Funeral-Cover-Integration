@@ -25,7 +25,7 @@ from dateutil.relativedelta import relativedelta # to add days or years
 # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 
 start = timeit.default_timer()
-st.set_page_config(page_title="Funeral Cover Integration", page_icon="")
+st.set_page_config(page_title="AUTO GENERAL INTEGRATION", page_icon="")
 
 #://returnxdigital.leadbyte.co.uk/api/submit.php?returnjson=yes&campid=FUNERAL-COVER&sid=24845&testmode=yes&email=test@test.com&firstname=Test&lastname=Test&phone1=0613394600&optinurl=http://url.com&optindate=INSERTVALUEyes&grossmonthlyincome=INSERTVALUE&acceptterms=true&offer_id=2512
 
@@ -68,7 +68,7 @@ elif authentication_status:
             return None
         return r.json()
     st.write(f'Welcome  *{name}*')
-    lottie_dog=load_lottieurl("https://assets7.lottiefiles.com/packages/lf20_xBGyhl.json") 
+    lottie_dog=load_lottieurl("https://assets7.lottiefiles.com/packages/slewLW4YOw.json") 
     with st_lottie_spinner(lottie_dog, width= 300, key="dog"):
 
 
@@ -90,88 +90,106 @@ elif authentication_status:
 
         #time.sleep(4)
         def main():
-            st.title("Funeral Cover Integration")
+            st.title("AUTO GENERAL INTEGRATION")
             st.subheader("NB, make sure the file is type XLSX:")
             data_file = st.file_uploader("[Leads]",type=['xlsx'])
-            NoError = True
+            campaign = st.radio(
+    "Select Campaign",
+    ["BUDGET-BDM", "DIALDIRECT-DDMP3", "AUTO_GENERAL-AGPI", "FIRST_WOMAN-FDMP3"],
+    index=None,
+)
+
+            st.write("You selected:", campaign)
             # lottie_nodata=load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_5awivhzm.json")
             # st_lottie(lottie_nodata, key="load", width=600)
-            if st.button("Process"):
+           
+            
 
-                if data_file is not None:
-                    file_details = {"Filename":data_file.name,"FileType":data_file.type,"FileSize":data_file.size}
+            # Initialize an empty DataFrame
+            response_df = pd.DataFrame(columns=["Email", "Response Status Code", "Name"])
+            successful_responses = []
+ 
+            if st.button("Process" ):
+                if campaign == None:
+                    st.error("Please Select Campaign")
+                else:
+                   
+                    if data_file is not None:
+                        file_details = {"Filename":data_file.name,"FileType":data_file.type,"FileSize":data_file.size}
 
-                    df_leads = read_file(data_file)
-    
+                        df_leads = read_file(data_file)
+        
+                        
                     
-                  
-                    latest_iteration = st.empty()
-                    print("-----------------------Leads------------------")
-                    len_df_leads =len(df_leads.index)
-                    
-    
+                        latest_iteration = st.empty()
+                        print("-----------------------Leads------------------")
+                        len_df_leads =len(df_leads.index)
+                        
+        
 
-                    for i, j in df_leads.iterrows():
-                        email = j[2]
-                        if len_df_leads - i == 1:
-                            latest_iteration.text('Done Loading Leads')
-                        else:
-                            latest_iteration.text(f'Leads: {len_df_leads - i} records left - {j[2]}')
-                        if pd.isna(email) ==True:
-                            break
-                        else:
-                           
-                            
-                            firstname=  j[0]
-                            lastname =  j[1]
+                        for i, j in df_leads.iterrows():
                             email = j[2]
-                            dateTime =  j[4]
-                            optinurl  =j[6]
-                            phone1= str(j[3])
-                            if (len(phone1) <10):
-                                phone1="0"+ str(j[3])
-                            
-                            optindate = str(j[6])
-                            testmode ="Yes"
-                            grossmonthlyincome = str(j[5])
-                            acceptterms = j[7].lower()
-                            if acceptterms =="no":
-                                acceptterms = "false"
+                            if len_df_leads - i == 1:
+                                latest_iteration.text('Done Loading Leads')
                             else:
-                                acceptterms = "true"
-                            
-                            offer_id = "2719"
-                         
-                            current_datetime = datetime.now()
-                            current_date_time = current_datetime.strftime("%m/%d/%Y, %H:%M:%S")
-                           
-                            url = "https://returnxdigital.leadbyte.co.uk/api/submit.php?returnjson=yes&campid=FUNERAL-COVER&sid=24845&email="+email+"&firstname="+firstname+"&lastname="+lastname+"&phone1="+phone1+"&optinurl="+optinurl+"&optindate="+optindate+"&acceptterms="+acceptterms+"&offer_id="+offer_id
-                          
-                            
-                         
-                            response = requests.post(url = url)
-                            content = str(response.content)
-                            content = content.replace("b'", '')
-                            content= content.rstrip("\'")
-                            res = json.loads(content)
-                            code = res.get("code")
-                            if (code !=1 ):
-                                NoError = False
-                                error= 'Error: '+ str(res.get("response"))+ " Email: " + email
-                                st.error( error, icon="🚨")
+                                latest_iteration.text(f'Leads: {len_df_leads - i} records left - {j[2]}')
+                            if pd.isna(email) ==True:
                                 break
-                            print("Leads- phone1:  ",response.content)
-                          
-                    if (NoError) :    
-                        st.markdown("<h2 style='text-align: center; color: white;'>Synchronization completed!</h2>", unsafe_allow_html=True)
-                        #lottie_nodata=load_lottieurl("https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json")
-                        lottie_nodata=load_lottieurl("https://assets7.lottiefiles.com/private_files/lf30_rjqwaenm.json")
-                        #st_lottie(lottie_nodata, key="done", width=270) https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json
-                        st.balloons()
-                        print("-----------------------------------------------")
-                    else:
-                        st.markdown("<h2 style='text-align: center; color: white;'>Synchronization Not completed:(</h2>", unsafe_allow_html=True)
+                            else:
+                            
+                                
+                                firstname=  j[0]
+                                lastname =  j[1]
+                                email = str(j[2])
+                                id_number =  str(j[4])
+            
+                                comments  =str(j[5])
+                                phone1= "0"+str(j[3])
+        
+                                sid ="99786998"
+                                
+                                if campaign =="BUDGET-BDM":
+                                    campid = "ALPHA-TLSRBDGT-WARM"
+                                # if campaign =="DIALDIRECT-DDMP3":
+                                #     campid = "ALPHA-TLSR-DIAL-WARM"
+                                # if campaign =="AUTO_GENERAL-AGPI":
+                                #     campid = "ALPHA-TLSRBDGT-WARM"
+                                # if campaign =="FIRST_WOMAN-FDMP3":
+                                #     campid = "ALPHA-TLSRBDGT-WARM"
+                                
+    
 
+                            
+                                current_datetime = datetime.now()
+                                current_date_time = current_datetime.strftime("%m/%d/%Y, %H:%M:%S")
+                            
+                                url = "https://icon.leadbyte.co.uk/restapi/v1.3/leads?campid="+campid+"&sid="+sid+"&email="+email+"&firstname="+firstname+"&lastname="+lastname+"&phone1="+phone1+"&id_number="+id_number+"&comments"+comments
+                                
+                                
+                                headers = {"X_KEY": "42d9b732862a56c33ed59dca9f2b43b1", "Content-Type": "application/json"}
+                                response = requests.post(url = url, headers=headers)
+                                print("Leads- ",response.content, phone1)
+                                if response.status_code == 200: 
+                                    status_ = "Success"
+                                else:
+                                     status_ = "Fail"
+
+                                successful_responses.append({ 'Status': status_  ,'Name': firstname,   'Last Name': lastname , 'Email': email, 'Phone': phone1, 'Id Number': id_number, 'Comments': comments, })
+
+                         
+                            
+                        if successful_responses:
+                            df_successful_responses = pd.DataFrame(successful_responses)
+                            st.write(df_successful_responses)
+                        else:
+                            st.write("No successful responses found.")  
+                        st.markdown("<h2 style='text-align: center; color: white;'>Data Upload completed!</h2>", unsafe_allow_html=True)
+                        #lottie_nodata=load_lottieurl("https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json")
+                        #lottie_nodata=load_lottieurl("https://assets7.lottiefiles.com/private_files/lf30_rjqwaenm.json")
+                        #st_lottie(lottie_nodata, key="done", width=270) https://lottie.host/?file=e686c78b-e554-498d-aaa1-e045ea2e2df9/iZMW2qsupf.json
+                        #st.balloons()
+                        print("-----------------------------------------------")
+            
         
         if __name__ == '__main__':
             main()
@@ -191,3 +209,5 @@ hide_st_style = """
                 """
         
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
+

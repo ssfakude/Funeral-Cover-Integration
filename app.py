@@ -134,12 +134,12 @@ index=None,
                             
                             if campaign =="BUDGET-BDM":
                                 campid = "ALPHA-TLSRBDGT-WARM"
-                            # if campaign =="DIALDIRECT-DDMP3":
-                            #     campid = "ALPHA-TLSR-DIAL-WARM"
-                            # if campaign =="AUTO_GENERAL-AGPI":
-                            #     campid = "ALPHA-TLSRBDGT-WARM"
-                            # if campaign =="FIRST_WOMAN-FDMP3":
-                            #     campid = "ALPHA-TLSRBDGT-WARM"
+                            if campaign =="DIALDIRECT-DDMP3":
+                                campid = "ALPHA-TLSR-DIAL-WARM"
+                            if campaign =="AUTO_GENERAL-AGPI":
+                                campid = "ALPHA-TLSRBDGT-WARM"
+                            if campaign =="FIRST_WOMAN-FDMP3":
+                                campid = "ALPHA-TLSRBDGT-WARM"
                             
 
 

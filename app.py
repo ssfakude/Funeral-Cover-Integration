@@ -84,7 +84,7 @@ elif authentication_status:
         data_file = st.file_uploader("[Leads]",type=['xlsx'])
         campaign = st.radio(
 "Select Campaign",
-["BUDGET-BDM", "DIALDIRECT-DDMP3", "AUTO_GENERAL-AGPI", "FIRST_WOMAN-FDMP3"],
+["BUDGET-BDM", "DIALDIRECT-DDMP3", "AUTO_GENERAL-AGPI", "FIRST_WOMAN-FDMP3", "CLIENTELE-LIFE-FUN", "CLIENTELE-LEGAL","Clientele Health"],
 index=None,
 )
 
@@ -140,8 +140,15 @@ index=None,
                                 campid = "ALPHA-TLSR-AUTO-WARM"
                             if campaign =="FIRST_WOMAN-FDMP3":
                                 campid = "ALPHA-TLSR-FFWO-WARM"
-                            
 
+                            if campaign =="CLIENTELE-LIFE-FUN":
+                                campid = "CLIENTELE-LIFE-FUN"
+                            if campaign =="CLIENTELE-LEGAL":
+                                campid = "CLIENTELE-LEGAL"
+                            if campaign =="CLIENTELE-HEALTH":
+                                campid = "CLIENTELE-HEALTH"
+                            
+                             
 
                         
                             current_datetime = datetime.now()

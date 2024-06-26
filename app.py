@@ -79,7 +79,7 @@ elif authentication_status:
 
     #time.sleep(4)
     def main():
-        st.title("AUTO GENERAL INTEGRATION")
+        st.title("PUSH CAMPAIGN LEADS")
         st.subheader("NB, make sure the file is type XLSX:")
         data_file = st.file_uploader("[Leads]",type=['xlsx'])
         campaign = st.radio(
